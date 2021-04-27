@@ -1,12 +1,12 @@
 # NIG_VRL
 
-1. git clone
+## 1. git clone
 
 ```
 git clone git@github.com:ddbj/nig_vrl.git && cd nig_vrl
 ```
 
-2. setup 
+## 2. setup 
 
 TODO
 ```
@@ -18,12 +18,11 @@ bash setup.sh
 * miniconda
 * pangolin
 
-3. env
+## 3. env
 
 TODO
 
-
-4. run sample 
+## 4. run sample 
 
 * meta_vrl Input 
 http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_1.fastq.gz
