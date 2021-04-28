@@ -53,15 +53,15 @@ unset __conda_setup
 
 ## 4. run sample 
 
-* meta_vrl Input 
+* meta_vrl Input  
 http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_1.fastq.gz
 http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_2.fastq.gz
 
-* Output
-https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa
+* Output  
+https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa  
 
 * dfast_vrl Input  
-https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa (Output of meta_vrl)
+https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa (Output of meta_vrl)  
 https://raw.githubusercontent.com/nigyta/dfast_vrl/main/examples/metadata.txt  
 
 * run dfast_vrl

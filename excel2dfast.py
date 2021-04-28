@@ -3,26 +3,22 @@ import numpy as np
 import os
 from copy import copy
 
-# change 
-sample_list_file = "dfast_sample_list.xlsx"
+# PLEASE INSTALL pandas and openpyxl using conda/pip
+# conda install pandas openpyxl
+
+# change following values if necessary
+sample_list_file = "sample_list.xlsx"
 job_file_name = "job_dfast_vrl.sh"
-
-
 sheet_name = "Sheet1"
 
-# output directory of metadata file
 metadata_root_dir = "metadata"
-
 result_root_dir = "results"  # output directory of dfast result file
+log_dir = "logs"
 
-
-
-ignore_keys = ["file_path"]
 
 os.makedirs(metadata_root_dir, exist_ok=True)
 os.makedirs(result_root_dir, exist_ok=True)
-
-
+os.makedirs(log_dir, exist_ok=True)
 
 
 def get_defaul_metadata():
@@ -40,7 +36,7 @@ def get_defaul_metadata():
         "submitter": "Kamiyama,M.; Arita,M.",
         "contact": "Masayuki Kamiyama",
         "email": "kanki@pref.shizuoka.lg.jp",
-        "url": "https://ddbj.nig.ac.jp",
+        "url": "",
         "phone": "81-54‐625‐9121",
         "phext": "",
         "fax": "",
@@ -73,7 +69,7 @@ def get_defaul_metadata():
 
 
 def write_metadata(sample_id, dict_metadata):
-    metadata_file = os.path.join(metadata_root_dir, sample_id + ".metadata.txt")
+    metadata_file = os.path.abspath(os.path.join(metadata_root_dir, sample_id + ".metadata.txt"))
     with open(metadata_file, "w") as f:
         for key, value in dict_metadata.items():
             if value:
@@ -81,8 +77,9 @@ def write_metadata(sample_id, dict_metadata):
     return metadata_file
 
 def make_dfast_cmd(sample_id, file_path, metadata_file):
-    output_dir = os.path.join(result_root_dir, sample_id)
-    cmd = f"singularity exec /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif dfast_vrl -i {file_path} -m {metadata_file} -o {output_dir} --force"
+    file_path = os.path.abspath(file_path)
+    output_dir = os.path.abspath(os.path.join(result_root_dir, sample_id))
+    cmd = f"singularity exec -B /lustre6/private/vrl/ /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif dfast_vrl -i {file_path} -m {metadata_file} -o {output_dir} --force"
     return cmd
 
 def write_job_script(outfile_name, commands):
@@ -92,10 +89,10 @@ def write_job_script(outfile_name, commands):
 #! /bin/bash
 #$ -S /bin/bash
 #$ -cwd
-#$ -l mem_req=16G,s_vmem=16G
+#$ -l mem_req=10G,s_vmem=10G
 #$ -t 1:{job_length}
-#$ -o logs
-#$ -e logs
+#$ -o {log_dir}
+#$ -e {log_dir}
 
 COMMANDS=(
 {commands}
@@ -110,26 +107,33 @@ eval $CMD
     with open(outfile_name, "w") as f:
         f.write(template)
 
-df = pd.read_excel(sample_list_file, sheet_name=sheet_name, converters={"collection_date": str, "holdDate": str, "year": str, "ZIP": str})
-df.fillna("", inplace=True)
-df = df.astype(np.str)
 
-commands = []
-for index, S in df.iterrows():
 
-    dict_metadata = get_defaul_metadata()
-    for key, value in S.iteritems():
-        if key in ignore_keys:
-            continue
-        value = value.strip()
-        if value:
-            dict_metadata[key] = value
-    sample_id = S["isolate"].replace("/", "_")
-    file_path = S["file_path"]
-    print(f"#{index+1}: Generating metadata file for {sample_id}")
-    metadata_file = write_metadata(sample_id, dict_metadata)
-    cmd = make_dfast_cmd(sample_id, file_path, metadata_file)
-    commands.append(cmd)
-print("-----")
-print(f"Generated job script to '{job_file_name}'")
-write_job_script(job_file_name, commands)
+if __name__ == "__main__":
+    ignore_keys = ["file_path"]
+    converters = {"collection_date": str, "holdDate": str, "year": str, "ZIP": str, "coverage": str}
+    df = pd.read_excel(sample_list_file, sheet_name=sheet_name, converters=converters)
+    df.fillna("", inplace=True)
+    df = df.astype(np.str)
+
+    commands = []
+    for index, S in df.iterrows():
+
+        dict_metadata = get_defaul_metadata()
+        for key, value in S.iteritems():
+            if key in ignore_keys:
+                continue
+            value = value.strip()
+            if value:
+                if key == "coverage":
+                    value = value + "x"
+                dict_metadata[key] = value
+        sample_id = S["isolate"].replace("/", "_")
+        file_path = S["file_path"]
+        print(f"#{index+1}: Generating metadata file for {sample_id}")
+        metadata_file = write_metadata(sample_id, dict_metadata)
+        cmd = make_dfast_cmd(sample_id, file_path, metadata_file)
+        commands.append(cmd)
+    print("-----")
+    print(f"Generated job script to '{job_file_name}'")
+    write_job_script(job_file_name, commands)
