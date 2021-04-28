@@ -69,3 +69,15 @@ https://raw.githubusercontent.com/nigyta/dfast_vrl/main/examples/metadata.txt
 singularity exec dfast_vrl:latest.sif dfast_vrl -i SRR10903401_1.fastq.final.contigs.cleaned.2000.f -m metadata.txt -o hCov-19_Japan_SZ-NIG-12345_2021 --isolate "hCov-19/Japan/SZ-NIG-12345/2021"
 ```
 The FASTA file is the only mandatory parameter (-i), others are optional.
+
+
+## 5. singularity コンテナ実行時の注意  
+コンテナ内から自ホームディレクトリ以外にあるファイルを参照する場合には、ディレクトリをコンテナにバインドする必要がある。  
+`-B`オプションを指定するか、環境変数 `SINGULARITY_BINDPATH`を設定しておくこと。  
+特に meta_vrl のジョブをqsubで実行する場合には、あらかじめ .bash_profile に
+
+```
+export SINGULARITY_BINDPATH="/lustre6/public/vrl"
+```
+
+のような形で記載してくとスクリプトを改変せずに実行できる。
