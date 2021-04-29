@@ -8,12 +8,13 @@ git clone git@github.com:ddbj/nig_vrl.git && cd nig_vrl
 
 ## 2. setup 
 
-TODO
 ```
 bash setup.sh
 ```
 
 ### meta_vrl
+### miniconda
+### pangolin
 ### dfast_vrl 
 Create singularity container 
 ```
@@ -23,13 +24,11 @@ or
 ```
 singularity pull dfast_vrl:1.2-0.3.sif docker://nigyta/dfast_vrl:1.2-0.3
 ```
-
 Alternatively, the container file located in `/lustre6/public/vrl` can be used. 
 
-### miniconda
-### pangolin
 
 ## 3. env
+
 
 ### .env
 
