@@ -38,16 +38,27 @@ Alternatively, the container file located in `/lustre6/public/vrl` can be used.
 
 ### 一般解析区画環境
 
-* meta_vrl_short_denovoを実行し、$HOME/testに結果を出力
+* meta_vrl_short_denovoを実行し、$HOME/Testdirに結果を出力
 
 ```
-mkdir $HOME/test
-qsub -l s_vmem=10G -l mem_req=10G -wd $HOME/test -v ENVFILE=/home/tf/repos/nig_vrl/env_gw meta_vrl/meta_vrl_short_denovo/meta_vrl_short_denovo.sh /lustre6/public/reference/meta_vrl/SRR10903401_1.fastq /lustre6/public/reference/meta_vrl/SRR10903401_2.fastq $HOME/test
+mkdir $HOME/Testdir
+qsub -l s_vmem=10G -l mem_req=10G -wd $HOME/Testdir -v ENVFILE=$PWD/meta_vrl/env_gw meta_vrl/meta_vrl_short_denovo/meta_vrl_short_denovo.sh /lustre6/public/reference/meta_vrl/SRR10903401_1.fastq /lustre6/public/reference/meta_vrl/SRR10903401_2.fastq $HOME/Testdir
 ```
 
+* meta_vrl_short_map.sh を実行し、$HOME/Testdir2に結果を出力
 
+```
+mkdir $HOME/Testdir2
+qsub -l s_vmem=32G -l mem_req=32G -wd $HOME/Testdir2 -v ENVFILE=$PWD/meta_vrl/env_gw meta_vrl/meta_vrl_short_map/meta_vrl_short_map.sh /lustre6/public/reference/meta_vrl/SRR10903401_1.fastq /lustre6/public/reference/meta_vrl/SRR10903401_2.fastq $HOME/Testdir2
+```
 
+meta_vrl_long_map.sh を実行し、$HOME/Testdir3に結果を出力
+```
+qsub -l s_vmem=32G -l mem_req=32G -wd $HOME/Testdir3 -v ENVFILE=$PWD/meta_vrl/env_gw meta_vrl/meta_vrl_long_map/meta_vrl_long_map.sh /lustre6/public/reference/meta_vrl/SRR10903401_1.fastq /lustre6/public/reference/meta_vrl/SRR10903401_2.fastq $HOME/Testdir3
+```
+TODO: fastq + fast5 取得と入力変更、動作確認
 
+---
 * meta_vrl Input  
 http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_1.fastq.gz
 http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_2.fastq.gz
