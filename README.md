@@ -33,25 +33,20 @@ Alternatively, the container file located in `/lustre6/public/vrl` can be used.
 
 ### .env
 
-### .bashrc
-```
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/tf/repos/nig_vrl/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/tf/repos/nig_vrl/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/tf/repos/nig_vrl/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/tf/repos/nig_vrl/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-```
 
 ## 4. run sample 
+
+### 一般解析区画環境
+
+* meta_vrl_short_denovoを実行し、$HOME/testに結果を出力
+
+```
+mkdir $HOME/test
+qsub -l s_vmem=10G -l mem_req=10G -wd $HOME/test -v ENVFILE=/home/tf/repos/nig_vrl/env_gw meta_vrl/meta_vrl_short_denovo/meta_vrl_short_denovo.sh /lustre6/public/reference/meta_vrl/SRR10903401_1.fastq /lustre6/public/reference/meta_vrl/SRR10903401_2.fastq $HOME/test
+```
+
+
+
 
 * meta_vrl Input  
 http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_1.fastq.gz
