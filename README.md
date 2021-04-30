@@ -25,32 +25,25 @@ bash setup.sh
 * dfast_vrl 
 
 
-Create singularity container 
-```
-singularity pull dfast_vrl:latest.sif docker://nigyta/dfast_vrl:latest
-```
-or
-```
-singularity pull dfast_vrl:1.2-0.3.sif docker://nigyta/dfast_vrl:1.2-0.3
-```
-Alternatively, the container file located in `/lustre6/public/vrl` can be used. 
-
-
-## 3. env
+## 3. 
 ### 一般解析区画用 env_gw
-
-#### meta_vrl_short_denovo
+* meta_vrl_short_denovo, meta_vrl_short_map, meta_vrl_long_mapの環境変数を統合した。以下の環境変数で一般解析区画で動作可能
+```
+KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
+MINIMAP2REF=/lustre6/public/reference/meta_vrl/Wuhan-Hu-1.fasta
+BWAREF=/lustre6/public/reference/meta_vrl/NC_045512.2.fasta
+SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
+```
+元の値は以下
 ```
 #KRAKEN2REF=/home/hoge/META_VRL/GRCh38.Wuhan
 #MINIMAP2REF=/home/hoge/META_VRL/WuHan.fasta
-KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
-MINIMAP2REF=/lustre6/public/reference/meta_vrl/Wuhan-Hu-1.fasta
-SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
-```
-#### meta_vrl_short_map, meta_vrl_long_map
-```
 #BWAREF=/home/hoge/META_VRL/NC_045512.2.fasta
-BWAREF=/lustre6/public/reference/meta_vrl/NC_045512.2.fasta
+```
+
+####  env_gwa
+```
+TODO
 ```
 
 ## 4. run sample 
@@ -108,16 +101,17 @@ https://github.com/ddbj/nig_vrl/tree/main/ddbj_data_submission
 
 
 ---
-* meta_vrl Input  
-http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_1.fastq.gz
-http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_2.fastq.gz
-
-* Output  
-https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa  
-
-* dfast_vrl Input  
-https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa (Output of meta_vrl)  
-https://raw.githubusercontent.com/nigyta/dfast_vrl/main/examples/metadata.txt  
+## 関連情報
+### dfast_vrl
+Create singularity container 
+```
+singularity pull dfast_vrl:latest.sif docker://nigyta/dfast_vrl:latest
+```
+or
+```
+singularity pull dfast_vrl:1.2-0.3.sif docker://nigyta/dfast_vrl:1.2-0.3
+```
+Alternatively, the container file located in `/lustre6/public/vrl` can be used. 
 
 * run dfast_vrl
 ```
@@ -125,8 +119,20 @@ singularity exec dfast_vrl:latest.sif dfast_vrl -i SRR10903401_1.fastq.final.con
 ```
 The FASTA file is the only mandatory parameter (-i), others are optional.
 
+### 動作確認のためのサンプル情報
+* meta_vrl_short_denovo, meta_vrl_short_map
+   * Input 
+http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_1.fastq.gz
+http://palaeo.nig.ac.jp/Resources/META_VRL/SRR10903401_2.fastq.gz
+   * Output
+https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa  
 
-## 5. singularity コンテナ実行時の注意  
+* dfast_vrl Input
+https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa (Output of meta_vrl)  
+https://raw.githubusercontent.com/nigyta/dfast_vrl/main/examples/metadata.txt  
+
+
+## singularity コンテナ実行時の注意  
 コンテナ内から自ホームディレクトリ以外にあるファイルを参照する場合には、ディレクトリをコンテナにバインドする必要がある。  
 `-B`オプションを指定するか、環境変数 `SINGULARITY_BINDPATH`を設定しておくこと。  
 特に meta_vrl のジョブをqsubで実行する場合には、あらかじめ .bash_profile に
