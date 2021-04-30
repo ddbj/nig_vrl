@@ -20,10 +20,18 @@ meta_vrl、pangolin, dfast_vrl実行環境構築
 bash setup.sh
 ```
 
-TODO：miniconda/pangolin
+TODO：install pangolinがシェルスクリプト内で実行できず、以下を手動で実行する必要がある
+```
+    cd pangolin
+    conda env create -f environment.yml
+    conda activate pangolin
+    python setup.py install
+    conda deactivate
+```
 
+## 3. META_VRL envfile
+リファレンス配列の配置とSINGULARITY_BINDPATH指定で必要
 
-## 3. 
 ### 一般解析区画用 env_gw
 * meta_vrl_short_denovo, meta_vrl_short_map, meta_vrl_long_mapの環境変数を統合した。以下の環境変数で一般解析区画で動作可能
 ```
