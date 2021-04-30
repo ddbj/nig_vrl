@@ -77,8 +77,8 @@ qsub -l s_vmem=100G -l mem_req=100G -wd $HOME/Testdir3 -v ENVFILE=$PWD/meta_vrl/
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_long_map
 
 * TODO: excel2dfastで metadata.txt生成とjob_dfast_vrl.sh実行までの動作確認（現在のinput,outputはddbj_data_submission配下を想定 
-** input: nig_vrl/ddbj_data_submission/dfast_sample_list.xlsx
-** output: nig_vrl/ddbj_data_submission/metadata, nig_vrl/ddbj_data_submission/results
+   * input: nig_vrl/ddbj_data_submission/dfast_sample_list.xlsx
+   * output: nig_vrl/ddbj_data_submission/metadata, nig_vrl/ddbj_data_submission/results
 
 ```
 cd ddbj_data_submission
