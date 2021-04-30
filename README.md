@@ -29,30 +29,7 @@ TODO：install pangolinがシェルスクリプト内で実行できず、以下
     conda deactivate
 ```
 
-## 3. META_VRL envfile
-リファレンス配列の配置とSINGULARITY_BINDPATH指定で必要
-
-### 一般解析区画用 env_gw
-* meta_vrl_short_denovo, meta_vrl_short_map, meta_vrl_long_mapの環境変数を統合した。以下の環境変数で一般解析区画で動作可能
-```
-KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
-MINIMAP2REF=/lustre6/public/reference/meta_vrl/Wuhan-Hu-1.fasta
-BWAREF=/lustre6/public/reference/meta_vrl/NC_045512.2.fasta
-SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
-```
-元の値は以下
-```
-#KRAKEN2REF=/home/hoge/META_VRL/GRCh38.Wuhan
-#MINIMAP2REF=/home/hoge/META_VRL/WuHan.fasta
-#BWAREF=/home/hoge/META_VRL/NC_045512.2.fasta
-```
-
-####  env_gwa
-```
-TODO
-```
-
-## 4. run sample 
+## 3. run sample 
 
 ### 一般解析区画環境
 
@@ -96,6 +73,33 @@ TODO: input,output,logの出力先を現在のddbj_data_submission配下から�
 
 https://github.com/ddbj/nig_vrl/tree/main/ddbj_data_submission
 
+
+## envfile
+リファレンスのパスやそのSINGULARITY_BINDPATH指定のために必要
+
+TODO: pangolin, dfastとリファレンスや入出力を整える
+
+### 一般解析区画用 env_gw
+* meta_vrl_short_denovo, meta_vrl_short_map, meta_vrl_long_mapの環境変数を統合した。以下の環境変数で一般解析区画で動作可能
+https://github.com/h-mori/meta_vrl/blob/tf/env_gw
+
+```
+KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
+MINIMAP2REF=/lustre6/public/reference/meta_vrl/Wuhan-Hu-1.fasta
+BWAREF=/lustre6/public/reference/meta_vrl/NC_045512.2.fasta
+SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
+```
+元の値は以下
+```
+#KRAKEN2REF=/home/hoge/META_VRL/GRCh38.Wuhan
+#MINIMAP2REF=/home/hoge/META_VRL/WuHan.fasta
+#BWAREF=/home/hoge/META_VRL/NC_045512.2.fasta
+```
+
+####  env_gwa
+```
+TODO
+```
 
 
 ---
