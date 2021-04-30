@@ -82,25 +82,17 @@ qsub -l s_vmem=100G -l mem_req=100G -wd $HOME/Testdir3 -v ENVFILE=$PWD/meta_vrl/
 
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_long_map
 
-* TODO: excel2dfastで metadata.txt生成とjob_dfast_vrl.sh実行までの動作確認（現在のinput,outputはddbj_data_submission配下を想定 
+* excel2dfastで metadata.txt生成とjob_dfast_vrl.sh実行までの動作確認
    * input: nig_vrl/ddbj_data_submission/dfast_sample_list.xlsx
    * output: nig_vrl/ddbj_data_submission/metadata, nig_vrl/ddbj_data_submission/results
+   * logs: nig_vrl/ddbj_data_submission/logs
 
 ```
 cd ddbj_data_submission
 singularity exec -B /lustre6/private/vrl /usr/local/biotools/d/dram:1.2.0--py_0 python excel2dfast.py
 qsub job_dfast_vrl.sh
 ```
-
-ddbj_data_submission/logs
-```
-Running command: singularity exec /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif dfast_vrl -i ../dfast_vrl/examples/SRR10903401.meta_vrl.contig.fa -m metadata/hCov-19_Japan_SZ-NIG-2_2021.metadata.txt -o results/hCov-19_Japan_SZ-NIG-2_2021 --force
-Running command: singularity exec /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif dfast_vrl -i ../dfast_vrl/examples/test_chimeric.fa -m metadata/hCov-19_Japan_SZ-NIG-3_2021.metadata.txt -o results/hCov-19_Japan_SZ-NIG-3_2021 --force
-FATAL:   could not open image /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: failed to retrieve path for /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: lstat /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: no such file or directory
-FATAL:   could not open image /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: failed to retrieve path for /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: lstat /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: no such file or directory
-Running command: singularity exec /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif dfast_vrl -i ../dfast_vrl/examples/LC570964-6.draft.contigs.fa -m metadata/hCov-19_Japan_SZ-NIG-1_2021.metadata.txt -o results/hCov-19_Japan_SZ-NIG-1_2021 --force
-FATAL:   could not open image /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: failed to retrieve path for /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: lstat /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif: no such file or directory
-```
+TODO: input,output,logの出力先を現在のddbj_data_submission配下からのmeta_vrl入出力に合わせて最適化
 
 https://github.com/ddbj/nig_vrl/tree/main/ddbj_data_submission
 
