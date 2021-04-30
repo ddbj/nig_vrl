@@ -82,7 +82,7 @@ def write_metadata(sample_id, dict_metadata):
 
 def make_dfast_cmd(sample_id, file_path, metadata_file):
     output_dir = os.path.join(result_root_dir, sample_id)
-    cmd = f"singularity exec /lustre6/public/vrl/dfast_vrl:1.2-0.2.sif dfast_vrl -i {file_path} -m {metadata_file} -o {output_dir} --force"
+    cmd = f"singularity exec /lustre6/public/vrl/dfast_vrl:latest.sif dfast_vrl -i {file_path} -m {metadata_file} -o {output_dir} --force"
     return cmd
 
 def write_job_script(outfile_name, commands):
