@@ -1,3 +1,12 @@
 dfast_vrl
 meta_vrl
 .DS_Store
+miniconda3
+pangolin
+Miniconda3-*
+OUT*
+META_VRL/
+ddbj_data_submission/job_dfast_vrl.sh
+ddbj_data_submission/logs
+ddbj_data_submission/metadata/
+ddbj_data_submission/results/
