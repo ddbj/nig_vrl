@@ -1,5 +1,12 @@
 # NIG_VRL
 
+## 0. qlogin
+
+pythonスクリプト実行のために以下でログイン
+```
+qlogin -l mem_req=20G,s_vmem=20G
+```
+
 ## 1. git clone
 
 ```
