@@ -12,10 +12,12 @@ git clone git@github.com:ddbj/nig_vrl.git && cd nig_vrl
 bash setup.sh
 ```
 
-### meta_vrl
-### miniconda
-### pangolin
-### dfast_vrl 
+* meta_vrl
+* TODO
+  * miniconda/pangolin 
+  * dfast_vrl 
+
+
 Create singularity container 
 ```
 singularity pull dfast_vrl:latest.sif docker://nigyta/dfast_vrl:latest
@@ -28,10 +30,19 @@ Alternatively, the container file located in `/lustre6/public/vrl` can be used.
 
 
 ## 3. env
-
-
-### .env
-
+### 一般解析区画用 env_gw
+```
+#meta_vrl_short_denovo
+#KRAKEN2REF=/home/hoge/META_VRL/GRCh38.Wuhan
+#MINIMAP2REF=/home/hoge/META_VRL/WuHan.fasta
+KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
+MINIMAP2REF=/lustre6/public/reference/meta_vrl/Wuhan-Hu-1.fasta
+SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
+#meta_vrl_short_map
+#meta_vrl_long_map
+#BWAREF=/home/hoge/META_VRL/NC_045512.2.fasta
+BWAREF=/lustre6/public/reference/meta_vrl/NC_045512.2.fasta
+```
 
 ## 4. run sample 
 
