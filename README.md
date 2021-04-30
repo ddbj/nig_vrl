@@ -15,14 +15,12 @@ git clone git@github.com:ddbj/nig_vrl.git && cd nig_vrl
 
 ## 2. setup 
 
+meta_vrl、pangolin, dfast_vrl実行環境構築
 ```
 bash setup.sh
 ```
 
-* meta_vrl
-* TODO
-  * miniconda/pangolin
-* dfast_vrl 
+TODO：miniconda/pangolin
 
 
 ## 3. 
