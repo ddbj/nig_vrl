@@ -87,6 +87,8 @@ KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
 MINIMAP2REF=/lustre6/public/reference/meta_vrl/Wuhan-Hu-1.fasta
 BWAREF=/lustre6/public/reference/meta_vrl/NC_045512.2.fasta
 SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
+# DFV_SINGULARITY_CONTAINER=  # Specify this if you want to change the default(=/lustre6/public/vrl/dfast_vrl:latest.sif)
+# DFV_SINGULARITY_OPTION=  # Specify this if you want to add options to 'singularity exec'. e.g. '-B /lustre6/public/vrl'
 ```
 
 ### pangolin
@@ -147,9 +149,9 @@ export SINGULARITY_BINDPATH="/lustre6/public/vrl"
 
 のような形で記載してくとスクリプトを改変せずに実行できる。
 
-## 6. 任意の時点での pangolin 参照データを使用する方法
+### 任意の時点での pangolin 参照データを使用する方法 (動作確認中)
 
-pangolin v2.4 以降、以下の方法は使えないかも（確認中）
+pangolin v2.4 以降、以下の方法は使えないかも
 
 pangolin の conda 仮想環境を activateした 状態で下記を実行
 
@@ -172,5 +174,6 @@ $ pangolin --update
 
 pangolin 本体もアップデートされているので古いバージョンの参照データでは動作しない可能性がある。その場合には
 ```
-
+pip install git+https://github.com/cov-lineages/pangolin.git@v2.3.8
 ```
+でpangolin本体を古いバージョンにできる。
