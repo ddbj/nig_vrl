@@ -81,6 +81,8 @@ mongo inactivate
 * リファレンスのパスやそのSINGULARITY_BINDPATH指定のために必要。meta_vrl_short_denovo, meta_vrl_short_map, meta_vrl_long_mapの環境変数を統合した。
    * 一般解析区画用env_gw: https://github.com/h-mori/meta_vrl/blob/tf/env_gw
    * 個人ゲノム解析区画用env_gwa: TODO
+* DFV_SINGULARITY_CONTAINERとDFV_SINGULARITY_OPTIONはdfast_vrl実行時のオプション。指定しなくてもデフォルトのまま動作する。 
+
 
 ```
 KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
