@@ -19,7 +19,7 @@ bash setup.sh
 以下、一般解析区画環境で動作を確認している
 
 ## meta_vrl_short_denovo
-* meta_vrl_short_denovoを実行し、$HOME/Testdirに結果を出力
+meta_vrl_short_denovoを実行し、$HOME/Testdirに結果を出力
 
 ```
 mkdir $HOME/Testdir
@@ -28,7 +28,7 @@ qsub -l s_vmem=10G -l mem_req=10G -wd $HOME/Testdir -v ENVFILE=$PWD/meta_vrl/env
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_short_denovo
 
 ### meta_vrl_short_map
-* meta_vrl_short_map.sh を実行し、$HOME/Testdir2に結果を出力
+meta_vrl_short_map.sh を実行し、$HOME/Testdir2に結果を出力
 
 ```
 mkdir $HOME/Testdir2
@@ -37,7 +37,7 @@ qsub -l s_vmem=32G -l mem_req=32G -wd $HOME/Testdir2 -v ENVFILE=$PWD/meta_vrl/en
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_short_map
 
 ### meta_vrl_long_map
-* meta_vrl_long_map.sh を実行し、$HOME/Testdir3に結果を出力
+meta_vrl_long_map.sh を実行し、$HOME/Testdir3に結果を出力
 ```
 mkdir $HOME/Testdir3
 qsub -l s_vmem=100G -l mem_req=100G -wd $HOME/Testdir3 -v ENVFILE=$PWD/meta_vrl/env_gw meta_vrl/meta_vrl_long_map/meta_vrl_long_map.sh /lustre6/public/reference/meta_vrl/SP1-mapped.fastq /lustre6/public/reference/meta_vrl/SP1-fast5-mapped/ $HOME/Testdir3
@@ -45,10 +45,10 @@ qsub -l s_vmem=100G -l mem_req=100G -wd $HOME/Testdir3 -v ENVFILE=$PWD/meta_vrl/
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_long_map
 
 ### excel2dfast
-* excel2dfastで metadata.txt生成とjob_dfast_vrl.sh実行までの動作確認
-   * input: nig_vrl/ddbj_data_submission/dfast_sample_list.xlsx
-   * output: nig_vrl/ddbj_data_submission/metadata, nig_vrl/ddbj_data_submission/results
-   * logs: nig_vrl/ddbj_data_submission/logs
+excel2dfastで metadata.txt生成とjob_dfast_vrl.sh実行までの動作確認
+* input: nig_vrl/ddbj_data_submission/dfast_sample_list.xlsx
+* output: nig_vrl/ddbj_data_submission/metadata, nig_vrl/ddbj_data_submission/results
+* logs: nig_vrl/ddbj_data_submission/logs
 
 ```
 cd ddbj_data_submission
@@ -61,12 +61,14 @@ https://github.com/ddbj/nig_vrl/tree/main/ddbj_data_submission
 
 ### pangolin
 
-pangolin実行
+pangolin実行し、$HOME/Testdir4/SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv に結果出力
 
-$HOME/Testdir4/SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv に結果出力
 ```
+mongo activate pangolin
 pangolin meta_vrl/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa --outdir $HOME/Testdir4 --outfile SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv
+mongo inactivate
 ```
+
 ## TODO
 * コンテナやリファレンス置き場の整理と１次ソースからのhttps取得スクリプトを作成
 * 個人ゲノム解析環境整備
