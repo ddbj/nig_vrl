@@ -149,7 +149,7 @@ def write_metadata(sample_id, dict_metadata):
 def make_dfast_cmd(sample_id, file_path, metadata_file):
     file_path = os.path.abspath(file_path)
     output_dir = os.path.abspath(os.path.join(result_root_dir, sample_id))
-    options = "-force"
+    options = "--force"
     if not os.path.exists(file_path):
         print(f"Aborted with an error: Query file not found [{file_path}]")
         exit(1)
