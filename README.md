@@ -73,6 +73,12 @@ TODO: input,output,logの出力先を現在のddbj_data_submission配下から�
 
 https://github.com/ddbj/nig_vrl/tree/main/ddbj_data_submission
 
+* pangolinを実行
+
+$HOME/Testdir4/SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv に結果出力
+```
+pangolin meta_vrl/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa --outdir $HOME/Testdir4 --outfile SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv
+```
 
 ## envfile
 リファレンスのパスやそのSINGULARITY_BINDPATH指定のために必要
@@ -104,6 +110,17 @@ TODO
 
 ---
 ## 関連情報
+### pangolin
+```
+# update
+conda activate pangolin
+pangolin --update
+
+# execution
+conda activate pangolin
+pangolin input_fasta
+```
+
 ### dfast_vrl
 Create singularity container 
 ```
