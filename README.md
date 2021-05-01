@@ -1,68 +1,54 @@
 # NIG_VRL
 
-## 0. qlogin
+## 1. setup
 
-pythonスクリプト実行のために以下でログイン
+gw.ddbj.nig.ac.jpにログイン後、pangolinやpythonスクリプト実行のために、メモリを割り当てて以下でqloginする。
 ```
 qlogin -l mem_req=20G,s_vmem=20G
 ```
 
-## 1. git clone
+git clone後に移動して、meta_vrl, minimongo/pangolin, dfast_vrl実行環境構築用setup.sh スクリプトを実行する
 
 ```
 git clone git@github.com:ddbj/nig_vrl.git && cd nig_vrl
-```
-
-## 2. setup 
-
-meta_vrl、pangolin, dfast_vrl実行環境構築
-```
 bash setup.sh
 ```
 
-TODO：install pangolinがシェルスクリプト内で実行できず、以下を手動で実行する必要がある
-```
-    cd pangolin
-    conda env create -f environment.yml
-    conda activate pangolin
-    python setup.py install
-    conda deactivate
-```
+## 2. run samples
 
-## 3. run sample 
+以下、一般解析区画環境で動作を確認している
 
-### 一般解析区画環境
-
-* meta_vrl_short_denovoを実行し、$HOME/Testdirに結果を出力
+## meta_vrl_short_denovo
+meta_vrl_short_denovoを実行し、$HOME/Testdirに結果を出力
 
 ```
 mkdir $HOME/Testdir
 qsub -l s_vmem=10G -l mem_req=10G -wd $HOME/Testdir -v ENVFILE=$PWD/meta_vrl/env_gw meta_vrl/meta_vrl_short_denovo/meta_vrl_short_denovo.sh /lustre6/public/reference/meta_vrl/SRR10903401_1.fastq /lustre6/public/reference/meta_vrl/SRR10903401_2.fastq $HOME/Testdir
 ```
-
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_short_denovo
 
-* meta_vrl_short_map.sh を実行し、$HOME/Testdir2に結果を出力
+### meta_vrl_short_map
+meta_vrl_short_map.sh を実行し、$HOME/Testdir2に結果を出力
 
 ```
 mkdir $HOME/Testdir2
 qsub -l s_vmem=32G -l mem_req=32G -wd $HOME/Testdir2 -v ENVFILE=$PWD/meta_vrl/env_gw meta_vrl/meta_vrl_short_map/meta_vrl_short_map.sh /lustre6/public/reference/meta_vrl/SRR10903401_1.fastq /lustre6/public/reference/meta_vrl/SRR10903401_2.fastq $HOME/Testdir2
 ```
-
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_short_map
 
-* meta_vrl_long_map.sh を実行し、$HOME/Testdir3に結果を出力
+### meta_vrl_long_map
+meta_vrl_long_map.sh を実行し、$HOME/Testdir3に結果を出力
 ```
 mkdir $HOME/Testdir3
 qsub -l s_vmem=100G -l mem_req=100G -wd $HOME/Testdir3 -v ENVFILE=$PWD/meta_vrl/env_gw meta_vrl/meta_vrl_long_map/meta_vrl_long_map.sh /lustre6/public/reference/meta_vrl/SP1-mapped.fastq /lustre6/public/reference/meta_vrl/SP1-fast5-mapped/ $HOME/Testdir3
 ```
-
 https://github.com/h-mori/meta_vrl/tree/main/meta_vrl_long_map
 
-* excel2dfastで metadata.txt生成とjob_dfast_vrl.sh実行までの動作確認
-   * input: nig_vrl/ddbj_data_submission/dfast_sample_list.xlsx
-   * output: nig_vrl/ddbj_data_submission/metadata, nig_vrl/ddbj_data_submission/results
-   * logs: nig_vrl/ddbj_data_submission/logs
+### excel2dfast
+excel2dfastで metadata.txt生成とjob_dfast_vrl.sh実行までの動作確認
+* input: nig_vrl/ddbj_data_submission/dfast_sample_list.xlsx
+* output: nig_vrl/ddbj_data_submission/metadata, nig_vrl/ddbj_data_submission/results
+* logs: nig_vrl/ddbj_data_submission/logs
 
 ```
 cd ddbj_data_submission
@@ -73,21 +59,28 @@ TODO: input,output,logの出力先を現在のddbj_data_submission配下から�
 
 https://github.com/ddbj/nig_vrl/tree/main/ddbj_data_submission
 
-* pangolinを実行
+### pangolin
 
-$HOME/Testdir4/SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv に結果出力
+pangolin実行し、$HOME/Testdir4/SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv に結果出力
+
 ```
+mongo activate pangolin
 pangolin meta_vrl/SRR10903401_1.fastq.final.contigs.cleaned.2000.fa --outdir $HOME/Testdir4 --outfile SRR10903401_1.fastq.final.contigs.cleaned.2000.lineage_report.csv
+mongo inactivate
 ```
 
-## envfile
-リファレンスのパスやそのSINGULARITY_BINDPATH指定のために必要
+## TODO
+* コンテナやリファレンス置き場の整理と１次ソースからのhttps取得スクリプトを作成
+* 個人ゲノム解析環境整備
+* リファレンス配列の統一: Wuhan-Hu-1.fasta、NC_045512.2.fasta、...
+* Isolate番号を利用してInput directory, Output directoryを整える
 
-TODO: pangolin, dfastとリファレンスや入出力を整える
-
-### 一般解析区画用 env_gw
-* meta_vrl_short_denovo, meta_vrl_short_map, meta_vrl_long_mapの環境変数を統合した。以下の環境変数で一般解析区画で動作可能
-https://github.com/h-mori/meta_vrl/blob/tf/env_gw
+---
+## 関連情報
+### envfile
+* リファレンスのパスやそのSINGULARITY_BINDPATH指定のために必要。meta_vrl_short_denovo, meta_vrl_short_map, meta_vrl_long_mapの環境変数を統合した。
+   * 一般解析区画用env_gw: https://github.com/h-mori/meta_vrl/blob/tf/env_gw
+   * 個人ゲノム解析区画用env_gwa: TODO
 
 ```
 KRAKEN2REF=/lustre6/public/reference/meta_vrl/GRCh38.Wuhan
@@ -95,23 +88,15 @@ MINIMAP2REF=/lustre6/public/reference/meta_vrl/Wuhan-Hu-1.fasta
 BWAREF=/lustre6/public/reference/meta_vrl/NC_045512.2.fasta
 SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
 ```
-元の値は以下
-```
-#KRAKEN2REF=/home/hoge/META_VRL/GRCh38.Wuhan
-#MINIMAP2REF=/home/hoge/META_VRL/WuHan.fasta
-#BWAREF=/home/hoge/META_VRL/NC_045512.2.fasta
-```
 
-####  env_gwa
-```
-TODO
-```
-
-
----
-## 関連情報
 ### pangolin
 ```
+# install
+conda env create -f environment.yml
+conda activate pangolin
+python setup.py install
+conda deactivate
+    
 # update
 conda activate pangolin
 pangolin --update
@@ -151,7 +136,7 @@ https://github.com/h-mori/meta_vrl/blob/main/SRR10903401_1.fastq.final.contigs.c
 https://raw.githubusercontent.com/nigyta/dfast_vrl/main/examples/metadata.txt  
 
 
-## singularity コンテナ実行時の注意  
+### singularity コンテナ実行時の注意  
 コンテナ内から自ホームディレクトリ以外にあるファイルを参照する場合には、ディレクトリをコンテナにバインドする必要がある。  
 `-B`オプションを指定するか、環境変数 `SINGULARITY_BINDPATH`を設定しておくこと。  
 特に meta_vrl のジョブをqsubで実行する場合には、あらかじめ .bash_profile に

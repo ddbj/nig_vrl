@@ -21,10 +21,6 @@ echo "install miniconda/pangolin"
 
 NIGVRL_MINICONDA=Miniconda3-py39_4.9.2-Linux-x86_64.sh
 
-if [ ! -d pangolin ]; then
-    git clone https://github.com/cov-lineages/pangolin.git
-fi
-
 if [ ! -f $NIGVRL_MINICONDA ]; then
     wget https://repo.anaconda.com/miniconda/$NIGVRL_MINICONDA
     bash $NIGVRL_MINICONDA -b -p $NIGVRL_ROOT/miniconda3
@@ -35,7 +31,7 @@ source $NIGVRL_ROOT/miniconda3/etc/profile.d/conda.sh
 
 if [ ! -d pangolin ]; then
     git clone https://github.com/cov-lineages/pangolin.git
-    #TODO install pangolin
+    #eval "$(/./miniconda3/bin/conda shell.bash hook)"
     cd pangolin
     conda env create -f environment.yml
     conda activate pangolin
