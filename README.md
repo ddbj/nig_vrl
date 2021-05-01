@@ -161,3 +161,31 @@ export SINGULARITY_BINDPATH="/lustre6/public/vrl"
 ```
 
 のような形で記載してくとスクリプトを改変せずに実行できる。
+
+## 6. 任意の時点での pangolin 参照データを使用する方法
+
+pangolin v2.4 以降、以下の方法は使えないかも（確認中）
+
+pangolin の conda 仮想環境を activateした 状態で下記を実行
+
+```
+$ pip install git+https://github.com/cov-lineages/pangoLEARN.git@2021-04-01
+```
+@以下の部分には https://github.com/cov-lineages/pangoLEARN/tags にあるタグ名を記載する。
+
+使用しているバージョンの確認は
+```
+$ pangolin -pv                                                             
+pangoLEARN 2021-04-01
+```
+
+元に戻す（最新バージョンにする)には
+```
+$ pangolin --update
+```
+を実行する。
+
+pangolin 本体もアップデートされているので古いバージョンの参照データでは動作しない可能性がある。その場合には
+```
+
+```
