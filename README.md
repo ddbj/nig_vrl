@@ -1,21 +1,20 @@
 # NIG_VRL
 
-## 0. qlogin
+## 1. setup
 
-pythonスクリプト実行のために以下でログイン
+gw.ddbj.nig.ac.jpにログイン後、qloginする。pangolinやpythonスクリプト実行のために、メモリを割り当てて以下でログイン
 ```
 qlogin -l mem_req=20G,s_vmem=20G
 ```
 
-## 1. git clone
+git cloneする
 
 ```
 git clone git@github.com:ddbj/nig_vrl.git && cd nig_vrl
 ```
 
-## 2. setup 
+meta_vrl, minimongo/pangolin, dfast_vrl実行環境構築のためsetup.sh スクリプトを実行する
 
-meta_vrl、pangolin, dfast_vrl実行環境構築
 ```
 bash setup.sh
 ```
@@ -29,7 +28,7 @@ TODO：install pangolinがシェルスクリプト内で実行できず、以下
     conda deactivate
 ```
 
-## 3. run sample 
+## 3. run samples
 
 ### 一般解析区画環境
 
@@ -107,6 +106,11 @@ SINGULARITY_BINDPATH=/lustre6/public/reference/meta_vrl
 TODO
 ```
 
+## TODO
+* コンテナやリファレンス置き場の整理と１次ソースからのhttps取得スクリプトを作成
+* 個人ゲノム解析環境整備
+* リファレンス配列の統一: Wuhan-Hu-1.fasta、NC_045512.2.fasta、...
+* Isolate番号を利用してInput directory, Output directoryを整える
 
 ---
 ## 関連情報
