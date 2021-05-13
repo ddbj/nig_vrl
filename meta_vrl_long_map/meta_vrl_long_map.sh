@@ -4,7 +4,7 @@
 # USAGE: this_shell_script inputfastq output_dir
 # inputfastq=$1
 # output_dir=$2
-MINIMAPREF=/home/nig-vrl/NC_045512.2.fasta
+#MINIMAPREF=/home/nig-vrl/NC_045512.2.fasta
 if [ ! -f $ENVFILE ]; then
   echo "No $ENVFILE file exist."
   exit 1
@@ -33,14 +33,17 @@ fi
 {
 DE0=`basename "$1"`
 cp "$1" "$2/$DE0"
+# need to specify Nanopore adapter in -g and -a, respectively. Ns are index sequence, so wildcard (N) is appropriate. Length of index is depend on your protocol.
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^ATTGTACTTCGTTCAGTTACGTATTGCTAANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNCAGCACCT -o $2/$DE0.trim1.fastq -O 30 -e 0.3 -m 100 -M 1000 -q 1 --discard-untrimmed $2/$DE0
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -a AGGTGCTGNNNNNNNNNNNNNNNNNNNNNNNNTTAACCTTAGCAATACGTAACTTA -o $2/$DE0.trim2.fastq -O 20 -e 0.3 -m 100 -q 1 --discard-untrimmed $2/$DE0.trim1.fastq
+# cut ARTIC primer by 33 bases. Multi Cs are dummy sequence.
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC -o $2/$DE0.trim3.fastq -O 50 -e 0.1 -m 100 -q 1 -u 33 $2/$DE0.trim2.fastq
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC -o $2/$DE0.trim4.fastq -O 50 -e 0.1 -m 100 -q 1 -u -33 $2/$DE0.trim3.fastq
 singularity exec /usr/local/biotools/m/minimap2\:2.17--hed695b0_3 minimap2 -ax map-ont $MINIMAPREF $2/$DE0.trim4.fastq -o $2/$DE0.sam
 singularity exec /usr/local/biotools/s/samtools\:1.11--h6270b1f_0 samtools view -Sbq 10 -F 0x04 $2/$DE0.sam > $2/$DE0.sam.mapped.bam
 singularity exec /usr/local/biotools/s/samtools\:1.11--h6270b1f_0 samtools sort $2/$DE0.sam.mapped.bam > $2/$DE0.sam.mapped.bam.sort.bam
 singularity exec /usr/local/biotools/s/samtools\:1.11--h6270b1f_0 samtools index $2/$DE0.sam.mapped.bam.sort.bam
+# need to activate conda medaka environment
 source ~/activate_conda.sh
 conda activate medaka
 medaka_variant -s r941_min_high_g360 -i $2/$DE0.sam.mapped.bam.sort.bam -f $MINIMAPREF -o $2/$DE0.medaka -t 1 -m r941_min_high_g360
@@ -52,6 +55,7 @@ singularity exec -B $2/tmp:/tmp -B $2/data:/usr/local/share/snpeff-5.0-0/data /u
 singularity exec /usr/local/biotools/b/bcftools\:1.10.2--hd2cd319_0 bcftools view $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf -Oz -o $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.gz
 singularity exec /usr/local/biotools/b/bcftools\:1.10.2--hd2cd319_0 bcftools index $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.gz
 singularity exec /usr/local/biotools/b/bcftools\:1.10.2--hd2cd319_0 bcftools consensus -f $MINIMAPREF $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.gz -o $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.fasta
+# need to activate conda pangolin environment
 source /lustre6/public/vrl/activate_pangolin.sh
 pangolin $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.fasta --outfile $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.fasta.csv
 
