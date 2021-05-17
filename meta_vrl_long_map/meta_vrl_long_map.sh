@@ -52,6 +52,10 @@ singularity exec /usr/local/biotools/l/lofreq\:2.1.5--py38h1bd3507_3 lofreq filt
 mkdir $2/tmp $2/data
 cp /etc/resolv.conf $2/tmp
 singularity exec -B $2/tmp:/tmp -B $2/data:/usr/local/share/snpeff-5.0-0/data /usr/local/biotools/s/snpeff\:5.0--0 snpEff -no-downstream -no-upstream -no-utr -classic -formatEff NC_045512.2 $2/$DE0.sam.mapped.bam.sort.bam.filter.vcf > $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf
+#summarize vcf
+perl /home/nig-vrl/ExtractSNVFromVCF.pl $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf
+perl /home/nig-vrl/CreateSNVTable.pl $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.ext
+
 singularity exec /usr/local/biotools/b/bcftools\:1.10.2--hd2cd319_0 bcftools view $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf -Oz -o $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.gz
 singularity exec /usr/local/biotools/b/bcftools\:1.10.2--hd2cd319_0 bcftools index $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.gz
 singularity exec /usr/local/biotools/b/bcftools\:1.10.2--hd2cd319_0 bcftools consensus -f $MINIMAPREF $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.gz -o $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.fasta
