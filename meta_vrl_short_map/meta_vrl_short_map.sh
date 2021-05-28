@@ -1,4 +1,3 @@
-
 #!/bin/sh
 #$ -S /bin/sh
 #$ -cwd
@@ -6,25 +5,27 @@
 # input_R1=$1
 # input_R2=$2
 # output_dir=$3
-BWAREF=/home/nig-vrl/NC_045512.2.fasta
+# sample_name=$4
+#Removed polyA
+BWAREF=/home/nig-vrl/IlluminaRef/NC_045512.2.fasta
 ILLUMINA=/home/nig-vrl/IlluminaAdapter.fasta
 LOGFILE="$3/meta_vrl.smap.log"
-if [ $# -ne 3 ]; then
+if [ $# -ne 4 ]; then
   echo "you specified $# arguments." 1>&2
-  echo "But this program can only use 3 arguments." 1>&2
+  echo "But this program can only use 4 arguments." 1>&2
   exit 1
 fi
 if [ ! -f $1 ]; then
-	echo "No $1 file exist." 1>&2
-	exit 1
+        echo "No $1 file exist." 1>&2
+        exit 1
 fi
 if [ ! -f $2 ]; then
-	echo "No $2 file exist." 1>&2
-	exit 1
+        echo "No $2 file exist." 1>&2
+        exit 1
 fi
 if [ ! -d $3 ]; then
-	echo "$3 directory does not exist. please mkdir" 1>&2
-	exit 1
+        echo "$3 directory does not exist. please mkdir" 1>&2
+        exit 1
 fi
 touch $LOGFILE
  if [ ! -f $LOGFILE ]; then
@@ -34,15 +35,17 @@ fi
 {
 DE0=`basename "$1"`
 DE1=`basename "$2"`
+SAMPLENAME=$4
+
 cp "$1" "$3/$DE0"
 cp "$2" "$3/$DE1"
 
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -a file:$ILLUMINA -o $3/$DE0.trim1.fastq -O 15 -e 0.1 -m 80 -q 1 $3/$DE0
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g file:$ILLUMINA -o $3/$DE0.trim2.fastq -O 15 -e 0.1 -m 80 -q 1 $3/$DE0.trim1.fastq
-singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -o $3/$DE0.trim3.fastq -O 50 -e 0.1 -m 30 -q 17 -u 35 $3/$DE0.trim2.fastq
+singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -o $3/$DE0.trim3.fastq -O 30 -e 0.1 -m 30 -q 17 -u 34 $3/$DE0.trim2.fastq
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -a file:$ILLUMINA -o $3/$DE1.trim1.fastq -O 15 -e 0.1 -m 80 -q 1 $3/$DE1
 singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g file:$ILLUMINA -o $3/$DE1.trim2.fastq -O 15 -e 0.1 -m 80 -q 1 $3/$DE1.trim1.fastq
-singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -o $3/$DE1.trim3.fastq -O 50 -e 0.1 -m 30 -q 17 -u 35 $3/$DE1.trim2.fastq
+singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -o $3/$DE1.trim3.fastq -O 30 -e 0.1 -m 30 -q 17 -u 34 $3/$DE1.trim2.fastq
 mkdir $3/pair
 singularity exec --no-mount tmp /usr/local/biotools/s/seqkit\:0.15.0--0 seqkit pair -1 $3/$DE0.trim3.fastq -2 $3/$DE1.trim3.fastq -O $3/pair
 
@@ -91,5 +94,8 @@ singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4
 singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4_0 bedtools maskfasta -fi $CONSENSUS -bed $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam.bed.unmapped.bed -fo $3/tmp.masked.fasta
 singularity exec --no-mount tmp /usr/local/biotools/s/seqkit\:0.15.0--0 seqkit replace -is -p "^n+|n+$" -r "" $3/tmp.masked.fasta > $3/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf.masked.fasta
 rm -f $3/tmp.masked.fasta
-pangolin $3/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta --outfile $3/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf.masked.fasta.csv
+pangolin $3/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf.masked.fasta --outfile $3/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf.masked.fasta.csv
+cat $3/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf.masked.fasta | sed -e "s/^>NC_045512\.2/>$SAMPLENAME/g" > $3/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf.masked.rename.fasta
+rm $3/$DE0
+rm $3/$DE1
 } >> "$LOGFILE" 2>&1
