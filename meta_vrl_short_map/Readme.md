@@ -13,7 +13,7 @@ You need to specify the places of BWAREF in NIG supercomputer in the meta_vrl_sh
 ## Usage
 ```bash
 mkdir Testdir2
-qsub -l s_vmem=50G -l mem_req=50G /home/hoge/META_VRL/meta_vrl_short_map.sh /home/hoge/SRR10903401_1.fastq /home/hoge/SRR10903401_2.fastq /home/hoge/Testdir2
+qsub -l s_vmem=50G -l mem_req=50G /home/hoge/META_VRL/meta_vrl_short_map.sh /home/hoge/SRR10903401_1.fastq /home/hoge/SRR10903401_2.fastq /home/hoge/Testdir2 Sample_name_for_FASTA_entry_name
 ```
 Please replace hoge to your username in NIG supercomputer.
 Also, please replace hoge in meta_vrl_short_map.sh to your username in NIG supercomputer.
