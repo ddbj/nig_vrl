@@ -13,7 +13,7 @@ You need to specify the places of MINIMAPREF in NIG supercomputer in the meta_vr
 ## Usage
 ```bash
 mkdir Testdir3
-qsub -l s_vmem=50G -l mem_req=50G /home/hoge/META_VRL/meta_vrl_long_map.sh /home/hoge/Nanopore_Sample1.fastq /home/hoge/Testdir3
+qsub -l s_vmem=50G -l mem_req=50G /home/hoge/META_VRL/meta_vrl_long_map.sh /home/hoge/Nanopore_Sample1.fastq /home/hoge/Testdir3 samplename
 ```
 Please replace hoge to your username in NIG supercomputer.
 Also, please replace hoge in meta_vrl_long_map.sh to your username in NIG supercomputer.
