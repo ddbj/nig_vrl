@@ -18,7 +18,7 @@ qsub -l s_vmem=50G -l mem_req=50G /home/hoge/META_VRL/meta_vrl_long_map.sh /home
 Please replace hoge to your username in NIG supercomputer.
 Also, please replace hoge in meta_vrl_long_map.sh to your username in NIG supercomputer.
 The s_vmem and mem_req are depended on the complexity of the query fastq files. Usually, 50G is enough (medaka, bcftools, pangolin use more than 16GB RAM).
-You need to specify an input fastq file and an output directory.
+You need to specify an input fastq file, an output directory, and a sample name that you want to add in the consensus FASTA file.
 
 ## Input and Output
 The input files of META_VRL_Long_Map is an Oxford Nanopore fastq file.
