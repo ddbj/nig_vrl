@@ -35,6 +35,23 @@ while(<INPUT>){
             print OUTPUT "NC_045512\.2\t21990\t\.\tTTTA\tT\t$1\;EFF\=CODON_CHANGE_PLUS_CODON_DELETION\(MODERATE\|\|tattac\/tac\|YY144Y\|1273\|S\|protein_coding\|CODING\|GU280_gp02\|1\|T\|INFO_REALIGN_3_PRIME\)  GT\:GQ   1\/1\:31\n";
         }
     }
+    elsif(/^(NC_045512\.2\t+\d+\t+\S+\t+(\S+)\t+(\S+)\t+\S+\t+\S+\t+DP\S(\S+?)\;DPS\S.+?)\s*$/){
+        if(length($2) == length($3)){
+            if(length($2) >= 2){
+                if($4 >= 10){
+                    print OUTPUT "$1\n";
+                }
+            }
+            else{
+                print OUTPUT "$1\n";
+            }
+        }
+        else{
+            if($4 >= 10){
+                print OUTPUT "$1\n";
+            }
+        }
+    }
     else{
         print OUTPUT $_;
     }
@@ -42,3 +59,4 @@ while(<INPUT>){
 close INPUT;
 close OUTPUT;
 exit;
+
