@@ -13,8 +13,10 @@ open(OUTPUT, ">$output") or die "Can't open \"$output\"\n";
 
 open(INPUT, "$input") or die "Can't open \"$input\"\n";
 while(<INPUT>){
-    if(/^NC_045512\.2\t+(\d+)\t+\S\t+(\S+)\t+(\S+)\t+\S+\t+\S+\t+(\S+)\t+/){
-        print OUTPUT "$1\t$2\t$3\t$4\n";
+    if(/^NC_045512\.2\t+(\d+)\t+\S\t+(\S+)\t+(\S+)\t+\S+\t+\S+\t+(DP\S(\S+?)\;DPS\S+)/){
+        if($5 >= 30){
+            print OUTPUT "$1\t$2\t$3\t$4\n";
+        }
     }
 }
 close INPUT;
