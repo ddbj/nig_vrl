@@ -80,14 +80,14 @@ singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4
 singularity exec --no-mount tmp /usr/local/biotools/s/seqkit\:0.15.0--0 seqkit replace -is -p "^n+|n+$" -r "" $2/tmp.masked.fasta > $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta
 rm -f $2/tmp.masked.fasta
 # make consensus FASTA with low depth region masked
-singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4_0 coverageBed -d -a $DE0/reference.size.bed -b $DE0/$DE3 > $DE0/map2consensus/consensus.cov.tsv
-awk 'BEGIN{flag_mapped=0;threshold=10;start=0}{if(!flag_mapped && $5>=threshold){flag_mapped=1;start=NR-1}else if(flag_mapped && $5<threshold){flag_mapped=0;print($1"\t"start"\t"NR-1)}}END{if(flag_mapped){print($1"\t"start"\t"NR)}}' $DE0/map2consensus/consensus.cov.tsv > $DE0/consensus.mapped.9.bed
-singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4_0 bedtools complement -i $DE0/consensus.mapped.9.bed -g $DE0/map2consensus/consensus.size > $DE0/map2consensus/$DE0.fastq.sam.mapped.bam.sort.bam.bed.unmapped.9.bed
-singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4_0 bedtools maskfasta -fi $CONSENSUS -bed $DE0/map2consensus/$DE0.fastq.sam.mapped.bam.sort.bam.bed.unmapped.9.bed -fo $DE0/tmp.masked.fasta
-singularity exec --no-mount tmp /usr/local/biotools/s/seqkit\:0.15.0--0 seqkit replace -is -p "^n+|n+$" -r "" $DE0/tmp.masked.fasta > $DE0/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta
+singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4_0 coverageBed -d -a $2/reference.size.bed -b $2/$DE0.sam.mapped.bam.sort.bam > $DIR_MAP2CONSENSUS/map2consensus/consensus.cov.tsv
+awk 'BEGIN{flag_mapped=0;threshold=10;start=0}{if(!flag_mapped && $5>=threshold){flag_mapped=1;start=NR-1}else if(flag_mapped && $5<threshold){flag_mapped=0;print($1"\t"start"\t"NR-1)}}END{if(flag_mapped){print($1"\t"start"\t"NR)}}' $DIR_MAP2CONSENSUS/map2consensus/consensus.cov.tsv > $DIR_MAP2CONSENSUS/consensus.mapped.9.bed
+singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4_0 bedtools complement -i $DIR_MAP2CONSENSUS/consensus.mapped.9.bed -g $DE0/map2consensus/consensus.size > $DE0/map2consensus/$DE0.fastq.sam.mapped.bam.sort.bam.bed.unmapped.9.bed
+singularity exec --no-mount tmp /usr/local/biotools/b/bedtools\:2.30.0--hc088bd4_0 bedtools maskfasta -fi $CONSENSUS -bed $DIR_MAP2CONSENSUS/map2consensus/$DE0.fastq.sam.mapped.bam.sort.bam.bed.unmapped.9.bed -fo $2/tmp.masked.fasta
+singularity exec --no-mount tmp /usr/local/biotools/s/seqkit\:0.15.0--0 seqkit replace -is -p "^n+|n+$" -r "" $2/tmp.masked.fasta > $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta
 
 source ~/activate_conda.sh
 conda activate pangolin
-pangolin $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta --outfile $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta.csv
-cat $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta | sed -e "s/^>NC_045512\.2/>$SAMPLENAME/g" > $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.rename.fasta
+pangolin $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta --outfile $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta.csv
+cat $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta | sed -e "s/^>NC_045512\.2/>$SAMPLENAME/g" > $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.rename.fasta
 } >> "$LOGFILE" 2>&1
