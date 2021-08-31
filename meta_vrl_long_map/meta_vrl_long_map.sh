@@ -35,14 +35,10 @@ fi
 DE0=`basename "$1"`
 SAMPLENAME=$3
 cp "$1" "$2/$DE0"
-singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^ATTGTACTTCGTTCAGTTACGTATTGCTAANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNCAGCACCT -o
- $2/$DE0.trim1.fastq -O 30 -e 0.3 -m 100 -M 1000 -q 1 --discard-untrimmed $2/$DE0
-singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -a AGGTGCTGNNNNNNNNNNNNNNNNNNNNNNNNTTAACCTTAGCAATACGTAACTTA -o $2/$DE0.trim
-2.fastq -O 20 -e 0.3 -m 100 -q 1 --discard-untrimmed $2/$DE0.trim1.fastq
-singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC -o $2/$DE0.tri
-m3.fastq -O 50 -e 0.1 -m 100 -q 1 -u 33 $2/$DE0.trim2.fastq
-singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC -o $2/$DE0.tri
-m4.fastq -O 50 -e 0.1 -m 100 -q 1 -u -33 $2/$DE0.trim3.fastq
+singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^ATTGTACTTCGTTCAGTTACGTATTGCTAANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNCAGCACCT -o $2/$DE0.trim1.fastq -O 30 -e 0.3 -m 100 -M 1000 -q 1 --discard-untrimmed $2/$DE0
+singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -a AGGTGCTGNNNNNNNNNNNNNNNNNNNNNNNNTTAACCTTAGCAATACGTAACTTA -o $2/$DE0.trim2.fastq -O 20 -e 0.3 -m 100 -q 1 --discard-untrimmed $2/$DE0.trim1.fastq
+singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC -o $2/$DE0.trim3.fastq -O 50 -e 0.1 -m 100 -q 1 -u 33 $2/$DE0.trim2.fastq
+singularity exec /usr/local/biotools/c/cutadapt\:3.2--py38h0213d0e_0 cutadapt -g ^CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC -o $2/$DE0.trim4.fastq -O 50 -e 0.1 -m 100 -q 1 -u -33 $2/$DE0.trim3.fastq
 singularity exec /usr/local/biotools/m/minimap2\:2.17--hed695b0_3 minimap2 -ax map-ont $MINIMAPREF $2/$DE0.trim4.fastq -o $2/$DE0.sam
 singularity exec /usr/local/biotools/s/samtools\:1.11--h6270b1f_0 samtools view -Sbq 10 -F 0x04 $2/$DE0.sam > $2/$DE0.sam.mapped.bam
 singularity exec /usr/local/biotools/s/samtools\:1.11--h6270b1f_0 samtools sort $2/$DE0.sam.mapped.bam > $2/$DE0.sam.mapped.bam.sort.bam
