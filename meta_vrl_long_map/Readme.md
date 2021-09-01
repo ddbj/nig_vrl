@@ -27,7 +27,7 @@ The input files of META_VRL_Long_Map is an Oxford Nanopore fastq file.
 The output files of META_VRL_Long_Map are 
 1. consensus FASTA file with low depth regions are masked to Ns (hoge.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta)
 2. pangolin lineage inference result CSV file (hoge.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta.9.csv)
-3. SNV VCF file against Wuhan-Hu-1 geome (hoge.vcf.filter.vcf.ext.snv)
+3. SNV VCF file against Wuhan-Hu-1 genome (hoge.vcf.filter.vcf.ext.snv)
 4. etc.
 
 ## Dependencies
