@@ -88,6 +88,6 @@ singularity exec --no-mount tmp /usr/local/biotools/s/seqkit\:0.15.0--0 seqkit r
 
 source ~/activate_conda.sh
 conda activate pangolin
-pangolin $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta --outfile $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta.csv
+pangolin $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta --outfile $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.fasta.9.csv
 cat $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta | sed -e "s/^>NC_045512\.2/>$SAMPLENAME/g" > $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.rename.fasta
 } >> "$LOGFILE" 2>&1
