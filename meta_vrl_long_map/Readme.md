@@ -1,7 +1,8 @@
 # META_VRL_Long_Map
 A viral genome reconstruction tool from metagenomic and metatranscriptomic sequencing data.
 META_VRL_Long_Map is a pipeline for the analysis of Oxford Nanopore fastq reads.
-This pipeline conducts a reference-based consensus sequence generation and a SNV calling analysis using NIG supercomputer (https://sc.ddbj.nig.ac.jp/en)
+This pipeline conducts a reference-based consensus sequence generation and a SNV calling analysis using NIG supercomputer (https://sc.ddbj.nig.ac.jp/en).
+This pipeline masks low depth regions (read depth < 10) in the consensus genome sequence.
 
 ## Reference data
 For MINIMAPREF, please download and use a RefSeq version of genome sequence data of Wuhan-Hu-1 (NC_045512.2)
