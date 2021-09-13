@@ -52,7 +52,7 @@ lofreq filter -i $2/$DE0.sam.mapped.bam.sort.bam.vcf -v 1 -o $2/$DE0.sam.mapped.
 
 # variant annotation
 snpEff -no-downstream -no-upstream -no-utr -classic -formatEff NC_045512.2 $2/$DE0.sam.mapped.bam.sort.bam.filter.vcf > $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf
-perl $DIRPATH/RemoveArtifactVCFNanopore2.pl $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf
+perl $DIRPATH/RemoveArtifactVCFNanopore.pl $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf
 perl $DIRPATH/ExtractSNVFromVCF.pl $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf
 perl $DIRPATH/CreateSNVTable.pl $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf.ext
 perl $DIRPATH/ReplaceLowDepthSNV.pl $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.filter.vcf
@@ -80,7 +80,7 @@ samtools index $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam
 # bamutils is only available in Python2.7 env. Use in-house awk script to make BED for mapped region
 # singularity exec --no-mount tmp /usr/local/biotools/n/ngsutils\:0.5.9--py27h516909a_2 bamutils expressed -ns $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam > $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam.bed
 faidx --transform bed $CONSENSUS > $DIR_MAP2CONSENSUS/consensus.size.bed
-coverageBed -d -a $DIR_MAP2CONSENSUS/consensus.size.bed -b $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam > $DIR_MAP2CONSENSUS/consensus.cov2.tsv
+coverageBed -d -a $DIR_MAP2CONSENSUS/consensus.size.bed -b $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam > $DIR_MAP2CONSENSUS/consensus.cov.tsv
 awk 'BEGIN{flag_mapped=0;threshold=1;start=0}{if(!flag_mapped && $5>=threshold){flag_mapped=1;start=NR-1}else if(flag_mapped && $5<threshold){flag_mapped=0;print($1"\t"start"\t"NR-1)}}END{if(flag_mapped){print($1"\t"start"\t"NR)}}' $DIR_MAP2CONSENSUS/consensus.cov.tsv > $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam.bed
 bedtools getfasta -fi $CONSENSUS -bed $DIR_MAP2CONSENSUS/$DE0.sam.mapped.bam.sort.bam.bed > $2/$DE0.sam.mapped.bam.sort.bam.filter.anno.vcf.mapped.fasta
 
@@ -93,7 +93,7 @@ rm -f $2/tmp.masked.fasta
 
 # make consensus FASTA with low depth region masked
 # Here, 'low depth' region is defined as "DP<10"
-awk 'BEGIN{flag_mapped=0;threshold=10;start=0}{if(!flag_mapped && $5>=threshold){flag_mapped=1;start=NR-1}else if(flag_mapped && $5<threshold){flag_mapped=0;print($1"\t"start"\t"NR-1)}}END{if(flag_mapped){print($1"\t"start"\t"NR)}}' $DIR_MAP2CONSENSUS/consensus.cov2.tsv > $DIR_MAP2CONSENSUS/consensus.mapped.9.bed
+awk 'BEGIN{flag_mapped=0;threshold=10;start=0}{if(!flag_mapped && $5>=threshold){flag_mapped=1;start=NR-1}else if(flag_mapped && $5<threshold){flag_mapped=0;print($1"\t"start"\t"NR-1)}}END{if(flag_mapped){print($1"\t"start"\t"NR)}}' $DIR_MAP2CONSENSUS/consensus.cov.tsv > $DIR_MAP2CONSENSUS/consensus.mapped.9.bed
 bedtools complement -i $DIR_MAP2CONSENSUS/consensus.mapped.9.bed -g $DIR_MAP2CONSENSUS/consensus.size > $DIR_MAP2CONSENSUS/$DE0.fastq.sam.mapped.bam.sort.bam.bed.unmapped.9.bed
 bedtools maskfasta -fi $CONSENSUS -bed $DIR_MAP2CONSENSUS/$DE0.fastq.sam.mapped.bam.sort.bam.bed.unmapped.9.bed -fo $2/tmp.masked.fasta
 seqkit replace -is -p "^n+|n+$" -r "" $2/tmp.masked.fasta > $2/$DE0.fastq.sam.mapped.bam.sort.bam.filter.anno.vcf.masked.9.fasta
