@@ -1,5 +1,7 @@
 # NIG_VRL
 
+**condaを使ってMETA_VRL_LONG_MAP (Nanoporeリードのマッピングによるパイプライン)を実行する方法は[こちら](meta_vrl_long_map/Readme_conda.md)**
+
 ## 1. setup
 
 gw.ddbj.nig.ac.jpにログイン後、pangolinやpythonスクリプト実行のために、メモリを割り当てて以下でqloginする。
