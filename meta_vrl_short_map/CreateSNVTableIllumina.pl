@@ -57,6 +57,18 @@ while(<INPUT>){
             }
         }
     }
+    elsif(/^(\S+)\t+(\S+)\t+(\S+)\t++DP=(\d+)\;AF=(\S+?)\;\S+?\;EFF=FRAME_SHIFT\S+?\|([A-Z0-9]+\*[A-Z0-9]+)\|\d+?\|(\S+?)\|protein_coding/){
+        print OUTPUT "$1\t$6 \($2 to $3 frame shift\)\t$7\t$4\t$5\n";
+        if($7 eq "S"){
+            if($first == 0){
+                print OUTPUT2 "$6 \($2 to $3 frame shift\)";
+                $first = 1;
+            }
+            else{
+                print OUTPUT2 ", $6 \($2 to $3 frame shift\)";
+            }
+        }
+    }
     elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+DP=(\d+)\;AF=(\S+?)\;\S+?\;EFF=CODON_DELETION\S+?\|([A-Z0-9]+)\|\d+?\|(\S+?)\|protein_coding/){
         print OUTPUT "$1\t$6 Deletion\t$7\t$4\t$5\n";
         if($7 eq "S"){
