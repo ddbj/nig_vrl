@@ -93,7 +93,55 @@ while(<INPUT>){
             }
         }
     }
+    elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+\S+?\;EFF=CODON_CHANGE_PLUS_CODON_INSERTION\S+?\|([A-Z0-9]+)\|\d+?\|(\S+?)\|protein_coding/){
+        print OUTPUT "$1\t$4\t$5\n";
+        if($5 eq "S"){
+            if($first == 0){
+                print OUTPUT2 "$4";
+                $first = 1;
+            }
+            else{
+                print OUTPUT2 ", $4";
+            }
+        }
+    }
+    elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+\S+?\;EFF=CODON_CHANGE\S+?\|([A-Z0-9]+)\|\d+?\|(\S+?)\|protein_coding/){
+        print OUTPUT "$1\t$4\t$5\n";
+        if($5 eq "S"){
+            if($first == 0){
+                print OUTPUT2 "$4";
+                $first = 1;
+            }
+            else{
+                print OUTPUT2 ", $4";
+            }
+        }
+    }
     elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+\S+?\;EFF=STOP_GAINED\S+?\|([A-Z0-9]+\*)\|\d+?\|(\S+?)\|protein_coding/){
+        print OUTPUT "$1\t$4\t$5\n";
+        if($5 eq "S"){
+            if($first == 0){
+                print OUTPUT2 "$4";
+                $first = 1;
+            }
+            else{
+                print OUTPUT2 ", $4";
+            }
+        }
+    }
+    elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+\S+?\;EFF=SYNONYMOUS_STOP\S+?\|(\S*?)\|\d+?\|(\S+?)\|protein_coding/){
+        print OUTPUT "$1\t$4\t$5\n";
+        if($5 eq "S"){
+            if($first == 0){
+                print OUTPUT2 "$4";
+                $first = 1;
+            }
+            else{
+                print OUTPUT2 ", $4";
+            }
+        }
+    }
+    elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+\S+?\;EFF=STOP_LOST\S+?\|(\S*?)\|\d+?\|(\S+?)\|protein_coding/){
         print OUTPUT "$1\t$4\t$5\n";
         if($5 eq "S"){
             if($first == 0){
