@@ -81,6 +81,18 @@ while(<INPUT>){
             }
         }
     }
+    elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+\S+?\;EFF=CODON_INSERTION\S+?\|([A-Z0-9]+)\|\d+?\|(\S+?)\|protein_coding/){
+        print OUTPUT "$1\t$4 Insertion\t$5\n";
+        if($5 eq "S"){
+            if($first == 0){
+                print OUTPUT2 "$4 Insertion";
+                $first = 1;
+            }
+            else{
+                print OUTPUT2 ", $4 Insertion";
+            }
+        }
+    }
     elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+\S+?\;EFF=CODON_CHANGE_PLUS_CODON_DELETION\S+?\|([A-Z0-9]+)\|\d+?\|(\S+?)\|protein_coding/){
         print OUTPUT "$1\t$4\t$5\n";
         if($5 eq "S"){
