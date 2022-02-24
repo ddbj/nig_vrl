@@ -165,6 +165,18 @@ while(<INPUT>){
             }
         }
     }
+    elsif(/^(\S+)\t+(\S+)\t+(\S+)\t+DP=(\d+)\;AF=(\S+?)\;\S+?\;EFF=START_LOST\S+?\|(\S*?)\|\d+?\|(\S+?)\|protein_coding/){
+        print OUTPUT "$1\t$6\t$7\t$4\t$5\n";
+        if($7 eq "S"){
+            if($first == 0){
+                print OUTPUT2 "$6";
+                $first = 1;
+            }
+            else{
+                print OUTPUT2 ", $6";
+            }
+        }
+    }
     else{
         print "$_";
     }
